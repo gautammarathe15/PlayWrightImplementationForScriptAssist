@@ -28,7 +28,7 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
             _page.SetDefaultTimeout(50000);
             await _page.GotoAsync("https://demo-mobile.scriptassist.co.uk");
             await _page.WaitForLoadStateAsync();      
-           //await _page.PauseAsync();
+            //await _page.PauseAsync();
 
         }
 
@@ -36,7 +36,7 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
         public async Task LoginWithValidCredentials(string username, string password)
         {
            await _loginPage.LoginWithCredentials(username, password);
-            await _page.PauseAsync();
+           //await _page.PauseAsync();
         }
 
         [Then(@"Verify that the user is been successfully logged in")]
