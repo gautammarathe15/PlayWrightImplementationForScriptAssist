@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Drivers\" />
+    <Folder Include="Features\Eztry\" />
     <Folder Include="Support\" />
   </ItemGroup>
 
