@@ -18,7 +18,7 @@ And Click on Logout
 Examples: 
 | TestID | UserName                  | Password   |
 | 1      | gauravmarathe98@gmail.com | TestJan123 |
-| 2      | gautammarathe15@gmail.com | Gautam@15  |
+| 2      | gautammarathe15@gmail.com | Ez@45678  |
 
 
 
