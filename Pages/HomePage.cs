@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection.PortableExecutable;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -23,6 +24,23 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         private ILocator SelectVideo => _page.GetByText("Video");
         private ILocator SelectDate => _page.GetByLabel("2 October 2024", new() { Exact = true });
         public ILocator SelectTimeSlot => _page.GetByText("18:20");
+
+        private ILocator UploadPhoto => _page.GetByRole(AriaRole.Link, new() { Name = " Upload User Photo" });
+        private ILocator UploadCloth => _page.GetByRole(AriaRole.Link, new() { Name = " Upload Cloth Photo" });
+        public ILocator SelectClothCat => _page.GetByRole(AriaRole.Combobox);
+        public ILocator AdvanceOption => _page.GetByRole(AriaRole.Link, new() { Name = "⚙️ Advanced Options ▼" });
+        public ILocator QualityOption => _page.Locator("form").Filter(new() { HasText = "213141" }).GetByRole(AriaRole.Combobox);
+        public ILocator TryButton => _page.GetByRole(AriaRole.Button, new() { Name = "Start Try-On" });
+        public ILocator DoneMessage => _page.GetByText("Done!");
+        public ILocator FinalImage => _page.Locator("img").Nth(4);
+        public ILocator InValid => _page.GetByText("Incorrect email address or");
+        public ILocator UserID => _page.GetByRole(AriaRole.Button, new() { Name = " Logout (gauravmarathe98@" });
+        public ILocator LogoutCheck => _page.GetByRole(AriaRole.Heading, new() { Name = "Log In" });
+        public void ThenFillTheAllDetails()
+        {
+            throw new PendingStepException();
+        }
+
         public HomePage(IPage page) : base(page)
         {
             _page = page;
@@ -64,7 +82,77 @@ namespace PlayWrightImplementationForScriptAssist.Pages
             //await _page.PauseAsync();
             await SelectTimeSlot.ClickAsync();
         }
-       
+        public async Task UploadUserPhoto()
+        {
+            var fileChooser = await _page.RunAndWaitForFileChooserAsync(async () =>
+            {
+                await UploadPhoto.ClickAsync();
+            });
+            await fileChooser.SetFilesAsync("C:\\Users\\gauta\\OneDrive\\Pictures\\Ez_Project\\Women_Test\\Lower_Body\\Test 1\\User_photo_1.jpg");
 
+            //await UploadPhoto.SetInputFilesAsync("C:\\Users\\gauta\\OneDrive\\Pictures\\133653369378782087.jpg");
+        }
+        public async Task ThenUploadClothPhoto()
+        {
+            var fileChooser = await _page.RunAndWaitForFileChooserAsync(async () =>
+            {
+                await UploadCloth.ClickAsync();
+            });
+            await fileChooser.SetFilesAsync("C:\\Users\\gauta\\OneDrive\\Pictures\\Ez_Project\\2007-wt20.avif");
+            //await _page.PauseAsync();
+        }
+        public async Task SelectCloth()
+        {
+            await SelectClothCat.SelectOptionAsync("upper_body");
+            //await _page.PauseAsync();
+        }
+        public async Task ClickandSelectAdavanceOption()
+            { 
+                await AdvanceOption.ClickAsync();
+                await QualityOption.SelectOptionAsync("31");
+
+                //await AdvanceOption.electOptionAsync("")
+            }
+    
+        public async Task ClickStart()
+        {
+            await TryButton.ClickAsync();
+          
+
+        }
+        /// <summary>
+        /// This Method Verifys Done Message & also the image which is transformed.
+        /// </summary>
+        /// <returns></returns>
+        public async Task TranformedChecking()
+        {
+            await Assertions.Expect(DoneMessage).ToBeVisibleAsync(new() { Timeout=100000});
+            await Assertions.Expect(_page.Locator("img").Nth(4)).ToBeVisibleAsync();
+        }
+
+        public async Task InvalidUser()
+        {
+            await Assertions.Expect(InValid).ToBeVisibleAsync();
+        }
+        public async Task ShowUserID()
+        {
+            await Assertions.Expect(UserID).ToBeVisibleAsync();
+        }
+
+        public async Task ShowUserID(string Username)
+        { 
+          
+            string LoginText = "Logout (" + Username + ")";
+            await Assertions.Expect(UserID).ToHaveTextAsync(LoginText);
+            
+        }
+        public async Task ClickLogout()
+        {
+            await UserID.ClickAsync();
+           // await _page.PauseAsync();
+            await Assertions.Expect(LogoutCheck).ToContainTextAsync("Log In"); 
+        }
+        
     }
+
 }
