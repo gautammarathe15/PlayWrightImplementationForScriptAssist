@@ -34,7 +34,7 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         public ILocator DoneMessage => _page.GetByText("Done!");
         public ILocator FinalImage => _page.Locator("img").Nth(4);
         public ILocator InValid => _page.GetByText("Incorrect email address or");
-        public ILocator UserID => _page.GetByRole(AriaRole.Button, new() { Name = " Logout (gauravmarathe98@" });
+        public ILocator UserID => _page.GetByRole(AriaRole.Button, new() { Name = " Logout " });
         public ILocator LogoutCheck => _page.GetByRole(AriaRole.Heading, new() { Name = "Log In" });
         public void ThenFillTheAllDetails()
         {
