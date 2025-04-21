@@ -18,6 +18,8 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         private ILocator PasswordEztry => _page.Locator("//input[@placeholder='password']");
         private ILocator LoginEztry => _page.Locator("//span[text()='Log In']");
 
+       
+
 
         public LoginPage(IPage page):base(page)
         {

@@ -14,7 +14,7 @@ namespace PlayWrightImplementationForScriptAssist.Utilities
             this.scenarioContext = scenarioContext;
         }
 
-        [BeforeScenario("Login", "BookAppointment")]
+        [BeforeScenario("Login", "BookAppointment" ,"redbus")]
         public void BeforeScenario()
         {
             driver=new Driver();
@@ -22,7 +22,7 @@ namespace PlayWrightImplementationForScriptAssist.Utilities
            
         }
 
-        [AfterScenario("Login", "BookAppointment")]
+        [AfterScenario("Login", "BookAppointment", "redbus")]
         public void AfterScenario()
         {
             driver.Dispose();

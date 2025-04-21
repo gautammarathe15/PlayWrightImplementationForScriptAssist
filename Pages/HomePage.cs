@@ -7,6 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace PlayWrightImplementationForScriptAssist.Pages
 {
@@ -36,6 +37,15 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         public ILocator InValid => _page.GetByText("Incorrect email address or");
         public ILocator UserID => _page.GetByRole(AriaRole.Button, new() { Name = " Logout " });
         public ILocator LogoutCheck => _page.GetByRole(AriaRole.Heading, new() { Name = "Log In" });
+        public ILocator FromCity => _page.GetByLabel("From");
+        public ILocator FromSelect => _page.GetByRole(AriaRole.Button, new() { Name = " mum From  Mumbai " });
+        public ILocator ToCity => _page.GetByLabel("To");
+        public ILocator DateClick => _page.GetByRole(AriaRole.Button, new() { Name = " Date" });
+        public ILocator Datefix => _page.GetByRole(AriaRole.Button, new() { Name = " Date Apr 2025 4 Holidays" });
+        public ILocator SearchBus => _page.GetByRole(AriaRole.Button, new() { Name = "SEARCH BUSES" });
+
+        public object Caltureinfo { get; private set; }
+
         public void ThenFillTheAllDetails()
         {
             throw new PendingStepException();
@@ -107,17 +117,17 @@ namespace PlayWrightImplementationForScriptAssist.Pages
             //await _page.PauseAsync();
         }
         public async Task ClickandSelectAdavanceOption()
-            { 
-                await AdvanceOption.ClickAsync();
-                await QualityOption.SelectOptionAsync("31");
+        {
+            await AdvanceOption.ClickAsync();
+            await QualityOption.SelectOptionAsync("31");
 
-                //await AdvanceOption.electOptionAsync("")
-            }
-    
+            //await AdvanceOption.electOptionAsync("")
+        }
+
         public async Task ClickStart()
         {
             await TryButton.ClickAsync();
-          
+
 
         }
         /// <summary>
@@ -126,7 +136,7 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         /// <returns></returns>
         public async Task TranformedChecking()
         {
-            await Assertions.Expect(DoneMessage).ToBeVisibleAsync(new() { Timeout=100000});
+            await Assertions.Expect(DoneMessage).ToBeVisibleAsync(new() { Timeout = 100000 });
             await Assertions.Expect(_page.Locator("img").Nth(4)).ToBeVisibleAsync();
         }
 
@@ -140,19 +150,92 @@ namespace PlayWrightImplementationForScriptAssist.Pages
         }
 
         public async Task ShowUserID(string Username)
-        { 
-          
+        {
+
             string LoginText = "Logout (" + Username + ")";
             await Assertions.Expect(UserID).ToHaveTextAsync(LoginText);
-            
+
         }
         public async Task ClickLogout()
         {
             await UserID.ClickAsync();
-           // await _page.PauseAsync();
-            await Assertions.Expect(LogoutCheck).ToContainTextAsync("Log In"); 
+            // await _page.PauseAsync();
+            await Assertions.Expect(LogoutCheck).ToContainTextAsync("Log In");
         }
-        
-    }
+        public async Task SelectMumbaiCity()
+        {
+            await FromCity.ClickAsync();
+            await FromCity.FillAsync("mum");
+            await _page.PauseAsync();
+            await _page.WaitForTimeoutAsync(2000);
+            await _page.Locator("text=Mumbai").First.ClickAsync();
+            //await FromCity.SelectTextAsync("");
+            //await FromSelect.IsVisibleAsync();
+            //  await _page.WaitForTimeoutAsync(2000);
+            await FromSelect.ClickAsync(new() { Timeout = 20000 });
+        }
+
+
+
+        public async Task SelectMumbaiCity(string fromCty)
+        {
+            await FromCity.ClickAsync();
+            await FromCity.FillAsync(fromCty);
+            // await _page.PauseAsync();
+            await _page.WaitForTimeoutAsync(2000);
+            await _page.Locator("text=" + fromCty).First.ClickAsync();
+            //await FromCity.SelectTextAsync("");
+            //await FromSelect.IsVisibleAsync();
+            //  await _page.WaitForTimeoutAsync(2000);
+            //await FromSelect.ClickAsync(new() { Timeout = 20000 });
+        }
+        public async Task SelectToCity(string tocity)
+        {
+            await ToCity.ClickAsync();
+            await ToCity.FillAsync(tocity);
+            // await _page.PauseAsync();
+            await _page.WaitForTimeoutAsync(2000);
+            await _page.Locator("text=" + tocity).First.ClickAsync();
+        }
+        public async Task BookDate()
+        {
+            await _page.PauseAsync();
+            //await DateClick.ClickAsync();
+
+            // Select the date (make sure calendar is visible)
+           
+            DateTime targetDate = DateTime.Now.AddDays(2);
+
+            string targetDay = targetDate.Day.ToString();
+           // string targetDay = targetDate.Day.ToString();
+            string targetMonthYear = targetDate.ToString("MMM yyyy",CultureInfo.InvariantCulture);
+            // Click on the onward date field to open the calendar
+            //await _page.ClickAsync("#onwardCal");
+             await Datefix.ClickAsync();
+            // Wait for the calendar title to appear
+            var calendarHeader = _page.Locator("//td[@class='monthTitle']").First;
+
+           
+            //while ((await calendarHeader.InnerTextAsync()).Trim() != targetMonthYear)
+            //{
+              // await _page.ClickAsync("//td[@class='next']");
+               //await calendarHeader.WaitForAsync(); // wait for new month to load
+           //s }
+
+            // Click the correct date
+            //await _page.ClickAsync($"//td[not(contains(@class, 'past')) and text()='{targetDay}']");
+            await _page.Locator("//td[@class='day'][contains(text(),'19')]").ClickAsync();
+
+
+            await Datefix.ClickAsync();
+            //await _page.ClickAsync($"//td[@class='wd day' or @class='we day' or @class='current day' or @class='day' or @class='']//*[text()='{day}']");
+        }
+        public async Task SearchClick()
+        {
+            await _page.PauseAsync();
+            await SearchBus.ClickAsync();
+        }
+
+        }
 
 }

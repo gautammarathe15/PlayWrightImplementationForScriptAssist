@@ -1,5 +1,7 @@
 ﻿using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
+using PlayWrightImplementationForScriptAssist.StepDefinitions;
+using SpecFlow.Actions.Playwright;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -56,7 +58,16 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
             await _page.WaitForLoadStateAsync();
            // await _page.PauseAsync();
         }
+        [Given(@"Launch the website for Redbus")]
+        public async Task GivenLaunchTheWebsiteForRedbus()
+        {
+            await _page.GotoAsync("https://www.redbus.in/");
+            await _page.WaitForLoadStateAsync();
+        
 
+            //await _page.WaitForLoadStateAsync();
+            //throw new PendingStepException();
+        }
 
         [When(@"Login with Valid credentials For Eztry ""([^""]*)"" and ""([^""]*)""")]
         public async Task WhenLoginWithValidCredentialsForEztryAnd(string Username, string Password)
@@ -103,7 +114,7 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
        
             await _homePage.ClickStart();
             await _page.WaitForLoadStateAsync();
-            //await _page.PauseAsync();
+            await _page.PauseAsync();
 
             //await _page.WaitForTimeoutAsync(60060);
         }
@@ -129,7 +140,7 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
         [When(@"Verify the ""([^""]*)"" is displaying on home page")]
         public async Task WhenVerifyTheIsDisplayingOnHomePage(string UserName)
         {
-            //await _page.PauseAsync();
+            await _page.PauseAsync();
             await _homePage.ShowUserID(UserName);
         }
 
@@ -143,5 +154,5 @@ namespace PlaywrightProjectToDemo.ScriptAssist.Demo.Tests.StepDefinitions
 
 
 
+        }
     }
-}
